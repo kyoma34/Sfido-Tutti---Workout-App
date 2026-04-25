@@ -57,9 +57,13 @@ public class MainActivity extends AppCompatActivity {
             loadProgramsForDay();
         });
 
-        // Navigate to Add Program
+        // Bottom Navigation
         findViewById(R.id.navAddProgram).setOnClickListener(v ->
                 startActivity(new Intent(this, AddProgramActivity.class))
+        );
+
+        findViewById(R.id.navProfile).setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class))
         );
 
         updateDateDisplay();
@@ -169,12 +173,12 @@ public class MainActivity extends AppCompatActivity {
         View card = LayoutInflater.from(this).inflate(R.layout.item_program_card, programContainer, false);
 
         TextView tvName = card.findViewById(R.id.tvProgramName);
-        TextView tvExCount = card.findViewById(R.id.tvExerciseCount);
+        TextView tvExerciseCount = card.findViewById(R.id.tvExerciseCount);
         Button btnStart = card.findViewById(R.id.btnStartWorkout);
         LinearLayout exerciseList = card.findViewById(R.id.exerciseList);
 
         tvName.setText(name != null ? name : "Unnamed Program");
-        tvExCount.setText(exCount + " exercise" + (exCount != 1 ? "s" : ""));
+        tvExerciseCount.setText(exCount + " exercise" + (exCount != 1 ? "s" : ""));
 
         if (exercises != null) {
             for (Map<String, Object> ex : exercises) {

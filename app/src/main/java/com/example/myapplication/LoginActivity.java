@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // Firebase Sign In
+            // Firebase Sign In - This checks if account exists and credentials are correct
             mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -56,8 +56,8 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        // If sign in fails
-                        Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(),
+                        // If sign in fails, Firebase provides the error (e.g., account doesn't exist or wrong password)
+                        Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
                 });

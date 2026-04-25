@@ -31,6 +31,10 @@
             android:name=".MainActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+
         <activity android:name=".AddProgramActivity"
             android:label="Add Program" />
     </application>
