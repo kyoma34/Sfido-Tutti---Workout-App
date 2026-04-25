@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0B1220">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="#0B1220"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/arrow"
+            android:padding="6dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="Create Program"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="72dp"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Program Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PROGRAM NAME"
+                android:textColor="#9CA3AF"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etProgramName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/input_bg"
+                android:hint="e.g. Push Day A"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:inputType="text"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Days of the Week -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DAYS OF THE WEEK"
+                android:textColor="#9CA3AF"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="10dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="6dp"
+                app:chipSpacingVertical="6dp"
+                android:layout_marginBottom="28dp" />
+
+            <!-- Exercises Section Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="EXERCISES"
+                    android:textColor="#9CA3AF"
+                    android:textSize="11sp"
+                    android:letterSpacing="0.1" />
+
+                <Button
+                    android:id="@+id/btnAddExercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="+ Add Exercise"
+                    android:textSize="12sp"
+                    android:backgroundTint="#1E2A3B"
+                    android:textColor="#FF3B3B"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
+
+            </LinearLayout>
+
+            <!-- Exercise Cards Container -->
+            <LinearLayout
+                android:id="@+id/exerciseContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/btnSaveProgram"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="💾  Save Program"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF3B3B" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

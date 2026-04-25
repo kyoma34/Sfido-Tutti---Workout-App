@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/exercise_card_bg"
+    android:padding="16dp"
+    android:layout_marginBottom="14dp">
+
+    <!-- Card Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="14dp">
+
+        <TextView
+            android:id="@+id/tvExerciseIndex"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Exercise 1"
+            android:textColor="#FF3B3B"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <ImageView
+            android:id="@+id/btnRemoveExercise"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="#4B5563"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+    </LinearLayout>
+
+    <!-- Exercise Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exercise Name"
+        android:textColor="#9CA3AF"
+        android:textSize="11sp"
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:id="@+id/etExerciseName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/input_bg"
+        android:hint="e.g. Push-ups"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:inputType="text"
+        android:layout_marginBottom="14dp" />
+
+    <!-- Sets and Reps Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <!-- Sets -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sets"
+                android:textColor="#9CA3AF"
+                android:textSize="11sp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/etSets"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:hint="3"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <!-- Reps -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reps"
+                android:textColor="#9CA3AF"
+                android:textSize="11sp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/etReps"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:hint="10"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Rest Times Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Rest Between Sets -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rest / Sets (sec)"
+                android:textColor="#9CA3AF"
+                android:textSize="11sp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/etRestBetweenSets"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:hint="60"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <!-- Rest Between Exercises -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rest / Exercise (sec)"
+                android:textColor="#9CA3AF"
+                android:textSize="11sp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:id="@+id/etRestBetweenExercises"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:hint="90"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

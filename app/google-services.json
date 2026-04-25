@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "179184211144",
+    "project_id": "sfido-tutti",
+    "storage_bucket": "sfido-tutti.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179184211144:android:91d49b591539fcbcc601fd",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP13ziWrjF0IudaLhp57bIqs4u8w-4LSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
