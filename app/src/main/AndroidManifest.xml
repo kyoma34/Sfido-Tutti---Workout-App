@@ -23,20 +23,10 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".OnboardingActivity" />
+        <activity android:name=".MainActivity" />
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-
-        <activity android:name=".AddProgramActivity"
-            android:label="Add Program" />
     </application>
 
 </manifest>

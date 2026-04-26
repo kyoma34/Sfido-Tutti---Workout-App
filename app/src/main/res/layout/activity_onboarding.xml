@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0B1220">
+
+    <!-- Close button -->
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:tint="#FFFFFF" />
+
+    <!-- STEP 1 -->
+    <LinearLayout
+        android:id="@+id/step1Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="Enter Your Informations"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:stretchColumns="1">
+
+            <TableRow android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="12dp" />
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/input_bg"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:inputType="text" />
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Age:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="12dp" />
+                <EditText
+                    android:id="@+id/etAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/input_bg"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:inputType="number" />
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weight:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="12dp" />
+                <EditText
+                    android:id="@+id/etWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/input_bg"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:inputType="number" />
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Height"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="12dp" />
+                <EditText
+                    android:id="@+id/etHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/input_bg"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:inputType="number" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="12dp" />
+                <RadioGroup
+                    android:id="@+id/rgGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/rbMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:textColor="#FFFFFF" />
+                    <RadioButton
+                        android:id="@+id/rbFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="16dp" />
+                </RadioGroup>
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:id="@+id/btnLayoutStep1">
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- STEP 2 -->
+    <LinearLayout
+        android:id="@+id/step2Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="What is your baseline activity level:"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <RadioGroup
+            android:id="@+id/rgActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/input_bg"
+            android:padding="8dp">
+
+            <RadioButton
+                android:id="@+id/rbNotActive"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="Not Very Active"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <RadioButton
+                android:id="@+id/rbSlightly"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="Slightly Active"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <RadioButton
+                android:id="@+id/rbActive"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="Active"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <RadioButton
+                android:id="@+id/rbVeryActive"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="Very Active"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <!-- STEP 3 -->
+    <LinearLayout
+        android:id="@+id/step3Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="Choose Your Goal:"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            android:background="@drawable/input_bg"
+            android:padding="4dp">
+
+            <android.widget.CheckBox
+                android:id="@+id/cbLoseWeight"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Lose Weight"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <android.widget.CheckBox
+                android:id="@+id/cbMaintainWeight"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Maintain Weight"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <android.widget.CheckBox
+                android:id="@+id/cbGainWeight"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Gain Weight"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <android.widget.CheckBox
+                android:id="@+id/cbGainMuscle"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Gain Muscle"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <android.widget.CheckBox
+                android:id="@+id/cbCutBodyFat"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Cut Body Fat"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+            <android.widget.CheckBox
+                android:id="@+id/cbManageStress"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Manage Stress"
+                android:textColor="#FFFFFF"
+                android:paddingStart="12dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Buttons at the bottom (always visible) -->
+    <LinearLayout
+        android:id="@+id/bottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="130dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#FF0000"
+            android:text="Cancel"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="130dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="#FF0000"
+            android:text="Next"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</FrameLayout>
