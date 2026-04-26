@@ -3,11 +3,11 @@ package com.example.myapplication;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.*;
@@ -15,6 +15,7 @@ import java.util.*;
 public class AddProgramActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private LinearLayout exerciseContainer;
     private EditText etProgramName;
     private ChipGroup chipGroupDays;
@@ -29,6 +30,7 @@ public class AddProgramActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_program);
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         etProgramName = findViewById(R.id.etProgramName);
         exerciseContainer = findViewById(R.id.exerciseContainer);
@@ -51,12 +53,9 @@ public class AddProgramActivity extends AppCompatActivity {
         }
 
         btnBack.setOnClickListener(v -> finish());
-
         btnAddExercise.setOnClickListener(v -> addExerciseCard());
-
         btnSaveProgram.setOnClickListener(v -> saveProgram());
 
-        // Add first exercise card by default
         addExerciseCard();
     }
 
@@ -94,6 +93,11 @@ public class AddProgramActivity extends AppCompatActivity {
     }
 
     private void saveProgram() {
+        if (mAuth.getCurrentUser() == null) {
+            Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String programName = etProgramName.getText().toString().trim();
         if (programName.isEmpty()) {
             etProgramName.setError("Enter a program name");
@@ -124,7 +128,6 @@ public class AddProgramActivity extends AppCompatActivity {
             String name = entry.etName.getText().toString().trim();
             if (name.isEmpty()) {
                 entry.etName.setError("Enter exercise name");
-                entry.etName.requestFocus();
                 return;
             }
             Map<String, Object> ex = new HashMap<>();
@@ -141,6 +144,7 @@ public class AddProgramActivity extends AppCompatActivity {
         program.put("days", selectedDays);
         program.put("exercises", exercises);
         program.put("createdAt", new Date());
+        program.put("userId", mAuth.getUid()); // Save current user ID
 
         db.collection("programs")
                 .add(program)

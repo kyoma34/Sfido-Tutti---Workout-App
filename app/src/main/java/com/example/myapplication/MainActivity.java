@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +18,7 @@ import java.util.*;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private LinearLayout programContainer;
     private TextView tvCurrentDate, tvDayLabel;
     private Calendar currentCalendar;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         currentCalendar = Calendar.getInstance();
 
         tvCurrentDate = findViewById(R.id.tvCurrentDate);
@@ -96,18 +100,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadProgramsForDay() {
+        if (mAuth.getCurrentUser() == null) return;
+
         programContainer.removeAllViews();
         String dayName = getSelectedDayName();
+        String userId = mAuth.getCurrentUser().getUid();
 
         // Show loading
         TextView tvLoading = new TextView(this);
-        tvLoading.setText("Loading programs…");
+        tvLoading.setText("Loading your programs…");
         tvLoading.setTextColor(0xFF9CA3AF);
         tvLoading.setTextSize(14f);
         tvLoading.setPadding(0, 24, 0, 0);
         programContainer.addView(tvLoading);
 
+        // Filter by userId AND dayName
         db.collection("programs")
+                .whereEqualTo("userId", userId)
                 .whereArrayContains("days", dayName)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -166,19 +175,21 @@ public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("unchecked")
     private void addProgramCard(DocumentSnapshot doc) {
         String name = doc.getString("name");
+        String programId = doc.getId();
         List<Map<String, Object>> exercises = (List<Map<String, Object>>) doc.get("exercises");
         int exCount = exercises != null ? exercises.size() : 0;
 
-        // Inflate or build card programmatically
+        // Inflate card
         View card = LayoutInflater.from(this).inflate(R.layout.item_program_card, programContainer, false);
 
         TextView tvName = card.findViewById(R.id.tvProgramName);
-        TextView tvExerciseCount = card.findViewById(R.id.tvExerciseCount);
+        TextView tvExCount = card.findViewById(R.id.tvExerciseCount);
         Button btnStart = card.findViewById(R.id.btnStartWorkout);
         LinearLayout exerciseList = card.findViewById(R.id.exerciseList);
+        ImageView btnDelete = card.findViewById(R.id.btnDeleteProgram);
 
         tvName.setText(name != null ? name : "Unnamed Program");
-        tvExerciseCount.setText(exCount + " exercise" + (exCount != 1 ? "s" : ""));
+        tvExCount.setText(exCount + " exercise" + (exCount != 1 ? "s" : ""));
 
         if (exercises != null) {
             for (Map<String, Object> ex : exercises) {
@@ -199,6 +210,26 @@ public class MainActivity extends AppCompatActivity {
         btnStart.setOnClickListener(v ->
                 Toast.makeText(this, "Starting: " + name, Toast.LENGTH_SHORT).show()
         );
+
+        // Delete Logic
+        if (btnDelete != null) {
+            btnDelete.setOnClickListener(v -> {
+                new AlertDialog.Builder(this)
+                        .setTitle("Delete Program")
+                        .setMessage("Are you sure you want to delete '" + name + "'?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            db.collection("programs").document(programId)
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(MainActivity.this, "Program deleted", Toast.LENGTH_SHORT).show();
+                                        loadProgramsForDay(); // Refresh list
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Error deleting: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            });
+        }
 
         programContainer.addView(card);
     }
