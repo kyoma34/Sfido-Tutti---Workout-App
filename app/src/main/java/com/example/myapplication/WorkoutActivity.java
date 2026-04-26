@@ -28,6 +28,7 @@ public class WorkoutActivity extends AppCompatActivity {
     private int totalExercisesFullyCompleted = 0;
     private long workoutStartTime;
     private long exerciseStartTime;
+    private float userWeightKg = 70f;
     
     private TextView tvExerciseName, tvSetInfo, tvRepsInfo, tvTimer, tvTimerLabel, tvWorkoutTitle;
     private Button btnAction;
@@ -42,6 +43,18 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         db = FirebaseFirestore.getInstance();
+
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid != null) {
+            db.collection("users").document(uid).get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Long weight = documentSnapshot.getLong("weight");
+                    if (weight != null && weight > 0) {
+                        userWeightKg = weight.floatValue();
+                    }
+                }
+            });
+        }
         
         Intent intent = getIntent();
         exercises = (List<Map<String, Object>>) intent.getSerializableExtra("exercises");
@@ -216,8 +229,29 @@ public class WorkoutActivity extends AppCompatActivity {
         finish();
     }
 
-    private int calculateCalories(long seconds) {
-        return (int) (seconds / 60.0 * 8);
+    private int calculateCalories(long totalSeconds) {
+        float totalCalories = 0;
+        if (exercises == null) return 1;
+
+        for (Map<String, Object> ex : exercises) {
+            String name = (String) ex.get("name");
+            int sets = getIntFromMap(ex, "sets", 3);
+            int reps = getIntFromMap(ex, "reps", 10);
+            int restBetweenSets = getIntFromMap(ex, "restBetweenSets", 60);
+            int restBetweenExercises = getIntFromMap(ex, "restBetweenExercises", 90);
+
+            float activeSeconds = sets * reps * 3f;
+            float restSeconds = (sets - 1) * restBetweenSets + restBetweenExercises;
+
+            float met = ExerciseMET.getMET(name);
+
+            float activeCalories = met * userWeightKg * (activeSeconds / 3600f);
+            float restCalories = 1.5f * userWeightKg * (restSeconds / 3600f);
+
+            totalCalories += (activeCalories + restCalories);
+        }
+
+        return Math.max(1, Math.round(totalCalories));
     }
 
     private void showAbortDialog() {

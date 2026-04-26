@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -21,6 +23,7 @@ public class TrackProgressActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private LinearLayout historyContainer;
     private TextView tvTotalWorkouts, tvTotalCalories, tvTotalMinutes, tvAvgCompletion, tvStreakCount;
+    private WeightChartView weightChartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class TrackProgressActivity extends AppCompatActivity {
         tvAvgCompletion  = findViewById(R.id.tvAvgCompletion);
         tvStreakCount    = findViewById(R.id.tvStreakCount);
         historyContainer = findViewById(R.id.historyContainer);
+        weightChartView  = findViewById(R.id.weightChartView);
 
         // Nav
         findViewById(R.id.navHome).setOnClickListener(v -> {
@@ -53,6 +57,7 @@ public class TrackProgressActivity extends AppCompatActivity {
         });
 
         loadStats();
+        loadWeightHistory();
     }
 
     private void loadStats() {
@@ -67,7 +72,6 @@ public class TrackProgressActivity extends AppCompatActivity {
                     long totalCalories = 0;
                     long totalSeconds = 0;
                     long totalPercentage = 0;
-                    int completedCount = 0;
                     List<Map<String, Object>> history = new ArrayList<>();
                     Set<String> completedDays = new TreeSet<>();
 
@@ -84,9 +88,8 @@ public class TrackProgressActivity extends AppCompatActivity {
                         if (cal != null) totalCalories += cal;
                         if (dur != null) totalSeconds += dur;
                         if (pct != null) totalPercentage += pct;
-                        if (Boolean.TRUE.equals(completed)) {
-                            completedCount++;
-                            if (date != null) completedDays.add(dayFmt.format(date));
+                        if (Boolean.TRUE.equals(completed) && date != null) {
+                            completedDays.add(dayFmt.format(date));
                         }
 
                         Map<String, Object> item = new HashMap<>();
@@ -99,7 +102,6 @@ public class TrackProgressActivity extends AppCompatActivity {
                         history.add(item);
                     }
 
-                    // Sort history by date descending
                     history.sort((a, b) -> {
                         Date da = (Date) a.get("date");
                         Date db2 = (Date) b.get("date");
@@ -109,10 +111,8 @@ public class TrackProgressActivity extends AppCompatActivity {
                         return db2.compareTo(da);
                     });
 
-                    // Calculate streak
                     int streak = calculateStreak(completedDays, dayFmt);
 
-                    // Update stats UI
                     tvTotalWorkouts.setText(String.valueOf(totalWorkouts));
                     tvTotalCalories.setText(String.valueOf(totalCalories));
                     tvTotalMinutes.setText(String.valueOf(totalSeconds / 60));
@@ -121,7 +121,6 @@ public class TrackProgressActivity extends AppCompatActivity {
                             : "0%");
                     tvStreakCount.setText(streak + " days");
 
-                    // Populate history list
                     historyContainer.removeAllViews();
                     if (history.isEmpty()) {
                         showEmpty();
@@ -134,6 +133,52 @@ public class TrackProgressActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> showEmpty());
     }
 
+    private void loadWeightHistory() {
+        if (mAuth.getCurrentUser() == null) return;
+        String uid = mAuth.getCurrentUser().getUid();
+
+        // Attempt history query. If it fails (e.g. missing index), we fall back to user doc.
+        db.collection("weight_history")
+            .whereEqualTo("userId", uid)
+            .orderBy("date", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                List<Float> weights = new ArrayList<>();
+                List<String> labels = new ArrayList<>();
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM d", Locale.getDefault());
+
+                for (DocumentSnapshot doc : querySnapshot) {
+                    weights.add(((Number) doc.get("weight")).floatValue());
+                    labels.add(sdf.format(doc.getDate("date")));
+                }
+
+                if (weights.isEmpty()) {
+                    fetchCurrentWeightFallback(uid);
+                } else {
+                    weightChartView.setData(weights, labels);
+                }
+            })
+            .addOnFailureListener(e -> {
+                // Common failure: Missing composite index. Fallback to single point.
+                fetchCurrentWeightFallback(uid);
+            });
+    }
+
+    private void fetchCurrentWeightFallback(String uid) {
+        db.collection("users").document(uid).get().addOnSuccessListener(userDoc -> {
+            List<Float> weights = new ArrayList<>();
+            List<String> labels = new ArrayList<>();
+            if (userDoc.exists() && userDoc.get("weight") != null) {
+                float currentWeight = ((Number) userDoc.get("weight")).floatValue();
+                weights.add(currentWeight);
+                labels.add("Current");
+            }
+            weightChartView.setData(weights, labels);
+        }).addOnFailureListener(e -> {
+            weightChartView.setData(new ArrayList<>(), new ArrayList<>());
+        });
+    }
+
     private int calculateStreak(Set<String> completedDays, SimpleDateFormat fmt) {
         if (completedDays.isEmpty()) return 0;
         List<String> days = new ArrayList<>(completedDays);
@@ -144,7 +189,6 @@ public class TrackProgressActivity extends AppCompatActivity {
         cal.add(Calendar.DAY_OF_YEAR, -1);
         String yesterday = fmt.format(cal.getTime());
 
-        // Streak must include today or yesterday
         if (!days.get(0).equals(today) && !days.get(0).equals(yesterday)) return 0;
 
         int streak = 1;
