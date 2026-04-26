@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        tvProfileName.setText(documentSnapshot.getString("name"));
+                        tvProfileName.setText(documentSnapshot.getString("username"));
                     }
                 })
                 .addOnFailureListener(e -> {
