@@ -31,19 +31,27 @@ public class ProfileActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
 
         if (currentUser != null) {
+            // Use Firebase Auth display name as fallback
+            String displayName = currentUser.getDisplayName();
+            if (displayName != null && !displayName.isEmpty()) {
+                tvProfileName.setText(displayName);
+            }
             tvProfileEmail.setText(currentUser.getEmail());
-            
-            // Fetch name from Firestore
+
+            // Try to get username from Firestore
             db.collection("users").document(currentUser.getUid())
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        tvProfileName.setText(documentSnapshot.getString("username"));
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(ProfileActivity.this, "Error fetching profile", Toast.LENGTH_SHORT).show();
-                });
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String username = documentSnapshot.getString("username");
+                            if (username != null && !username.isEmpty()) {
+                                tvProfileName.setText(username);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Silently fail — display name is already shown
+                    });
         }
 
         btnLogout.setOnClickListener(v -> {
@@ -62,8 +70,12 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.navAddProgram).setOnClickListener(v -> {
-            startActivity(new Intent(this, AddProgramActivity.class));
-            finish();
+            // TODO: create AddProgramActivity later
+            Toast.makeText(this, "Coming soon!", Toast.LENGTH_SHORT).show();
+        });
+
+        findViewById(R.id.navProfile).setOnClickListener(v -> {
+            // Already on profile, do nothing
         });
     }
 }
