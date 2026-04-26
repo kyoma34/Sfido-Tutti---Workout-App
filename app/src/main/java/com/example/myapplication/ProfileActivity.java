@@ -66,6 +66,11 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         });
 
+        findViewById(R.id.navTrack).setOnClickListener(v -> {
+            startActivity(new Intent(this, TrackProgressActivity.class));
+            finish();
+        });
+
         findViewById(R.id.navProfile).setOnClickListener(v -> {
             // Already on profile
         });

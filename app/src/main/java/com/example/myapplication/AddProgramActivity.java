@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,23 @@ public class AddProgramActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
         btnAddExercise.setOnClickListener(v -> addExerciseCard());
         btnSaveProgram.setOnClickListener(v -> saveProgram());
+
+        // Navigation
+        findViewById(R.id.navHome).setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
+        findViewById(R.id.navAddProgram).setOnClickListener(v -> {
+            // Already here
+        });
+        findViewById(R.id.navTrack).setOnClickListener(v -> {
+            startActivity(new Intent(this, TrackProgressActivity.class));
+            finish();
+        });
+        findViewById(R.id.navProfile).setOnClickListener(v -> {
+            startActivity(new Intent(this, ProfileActivity.class));
+            finish();
+        });
 
         addExerciseCard();
     }
@@ -144,7 +162,7 @@ public class AddProgramActivity extends AppCompatActivity {
         program.put("days", selectedDays);
         program.put("exercises", exercises);
         program.put("createdAt", new Date());
-        program.put("userId", mAuth.getUid()); // Save current user ID
+        program.put("userId", mAuth.getUid());
 
         db.collection("programs")
                 .add(program)

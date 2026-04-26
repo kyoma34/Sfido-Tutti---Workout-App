@@ -67,7 +67,14 @@
 
     </LinearLayout>
 
-    <!-- Bottom Nav (Copy from MainActivity for consistency) -->
+    <!-- Bottom Nav -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1E2A3B"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav" />
+
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -80,63 +87,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@drawable/home_icon" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Home"
-                android:textColor="#9CA3AF"
-                android:textSize="12dp" />
+        <LinearLayout android:id="@+id/navHome" android:layout_width="80dp" android:layout_height="wrap_content" android:orientation="vertical">
+            <ImageView android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/home_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Home" android:textColor="#9CA3AF" android:textSize="12dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/navAddProgram"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@drawable/add_icon" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Add Program"
-                android:textColor="#9CA3AF"
-                android:textSize="11dp" />
+        <LinearLayout android:id="@+id/navAddProgram" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:orientation="vertical">
+            <ImageView android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/add_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Add Program" android:textColor="#9CA3AF" android:textSize="11dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/navProfile"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="@drawable/profile_icon" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Profile"
-                android:textColor="#FF3B3B"
-                android:textSize="12dp" />
+        <LinearLayout android:id="@+id/navTrack" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:orientation="vertical">
+            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/check_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Track Progress" android:textColor="#9CA3AF" android:textSize="11dp" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navProfile" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:orientation="vertical">
+            <ImageView android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/profile_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Profile" android:textColor="#FF3B3B" android:textSize="12dp" />
         </LinearLayout>
 
     </LinearLayout>
