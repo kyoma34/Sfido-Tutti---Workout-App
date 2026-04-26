@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -44,14 +45,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-3dp"
                     android:orientation="horizontal"
                     android:paddingTop="4dp">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginTop="-2.5dp"
                         android:background="@drawable/g_trophy_icon" />
 
                     <TextView
@@ -64,11 +63,12 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvWeeklyGoal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="4dp"
-                    android:text="4/5"
+                    android:text="0/5"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -96,7 +96,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-3dp"
                     android:orientation="horizontal"
                     android:paddingTop="4dp">
 
@@ -109,18 +108,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginTop="-2dp"
                         android:text="Streak"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvStreak"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="6dp"
-                    android:text="12"
+                    android:text="0"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -137,11 +136,11 @@
 
         </LinearLayout>
 
-        <!-- Date Navigator -->
+        <!-- Date Navigator — date and Today on same line -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rectangle_calend"
             android:gravity="center"
             android:orientation="horizontal">
@@ -150,47 +149,40 @@
                 android:id="@+id/btnPrevDay"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="60dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/arrow"
                 android:padding="4dp" />
 
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_marginTop="-9dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="6dp"
                 android:background="@drawable/calendar_icon" />
 
-            <LinearLayout
+            <!-- Date + Today on same line -->
+            <TextView
+                android:id="@+id/tvCurrentDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical">
+                android:text="Mon, Apr 27"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp" />
 
-                <TextView
-                    android:id="@+id/tvCurrentDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Monday, Apr 24"
-                    android:textColor="#FFFFFF"
-                    android:textSize="17dp" />
-
-                <TextView
-                    android:id="@+id/tvDayLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="Today"
-                    android:textColor="#FF0000"
-                    android:textSize="15dp" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvDayLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="· Today"
+                android:textColor="#FF3B3B"
+                android:textSize="15sp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/btnNextDay"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="60dp"
+                android:layout_marginStart="24dp"
                 android:background="@drawable/arrow"
                 android:rotationY="180"
                 android:padding="4dp" />
@@ -209,7 +201,7 @@
 
     </LinearLayout>
 
-    <!-- SCROLLABLE PROGRAM LIST (dynamic from Firebase) -->
+    <!-- SCROLLABLE PROGRAM LIST -->
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
@@ -250,99 +242,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Home -->
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/home_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Home"
-                android:textColor="#FF3B3B"
-                android:textSize="12dp" />
+        <LinearLayout android:id="@+id/navHome" android:layout_width="80dp" android:layout_height="wrap_content" android:orientation="vertical">
+            <ImageView android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/home_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Home" android:textColor="#FF3B3B" android:textSize="12dp" />
         </LinearLayout>
 
-        <!-- Add Program -->
-        <LinearLayout
-            android:id="@+id/navAddProgram"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/add_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Add Program"
-                android:textColor="#9CA3AF"
-                android:textSize="11dp" />
+        <LinearLayout android:id="@+id/navAddProgram" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:orientation="vertical">
+            <ImageView android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/add_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Add Program" android:textColor="#9CA3AF" android:textSize="11dp" />
         </LinearLayout>
 
-        <!-- Track Progress -->
-        <LinearLayout
-            android:id="@+id/navTrack"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/check_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Track Progress"
-                android:textColor="#9CA3AF"
-                android:textSize="11dp" />
+        <LinearLayout android:id="@+id/navTrack" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:orientation="vertical">
+            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/check_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Track Progress" android:textColor="#9CA3AF" android:textSize="11dp" />
         </LinearLayout>
 
-        <!-- Profile -->
-        <LinearLayout
-            android:id="@+id/navProfile"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/profile_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Profile"
-                android:textColor="#9CA3AF"
-                android:textSize="12dp" />
+        <LinearLayout android:id="@+id/navProfile" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:orientation="vertical">
+            <ImageView android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center" android:layout_marginBottom="5dp" android:background="@drawable/profile_icon" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:text="Profile" android:textColor="#9CA3AF" android:textSize="12dp" />
         </LinearLayout>
 
     </LinearLayout>

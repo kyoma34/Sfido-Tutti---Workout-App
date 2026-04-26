@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private LinearLayout programContainer;
-    private TextView tvCurrentDate, tvDayLabel;
+    private TextView tvCurrentDate, tvDayLabel, tvWeeklyGoal, tvStreak;
     private Calendar currentCalendar;
     private Set<String> completedProgramIds = new HashSet<>();
 
@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         currentCalendar = Calendar.getInstance();
 
         tvCurrentDate = findViewById(R.id.tvCurrentDate);
-        tvDayLabel = findViewById(R.id.tvDayLabel);
+        tvDayLabel    = findViewById(R.id.tvDayLabel);
+        tvWeeklyGoal  = findViewById(R.id.tvWeeklyGoal);
+        tvStreak      = findViewById(R.id.tvStreak);
         programContainer = findViewById(R.id.programContainer);
 
         findViewById(R.id.btnPrevDay).setOnClickListener(v -> {
@@ -66,18 +68,88 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AddProgramActivity.class))
         );
 
+        findViewById(R.id.navTrack).setOnClickListener(v ->
+                startActivity(new Intent(this, TrackProgressActivity.class))
+        );
+
         findViewById(R.id.navProfile).setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class))
         );
 
+        findViewById(R.id.navHome).setOnClickListener(v -> { /* already here */ });
+
         updateDateDisplay();
         loadHistoryAndPrograms();
+        loadWeeklyStats();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         loadHistoryAndPrograms();
+        loadWeeklyStats();
+    }
+
+    private void loadWeeklyStats() {
+        if (mAuth.getCurrentUser() == null) return;
+        String uid = mAuth.getCurrentUser().getUid();
+
+        db.collection("workout_history")
+                .whereEqualTo("userId", uid)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    // Weekly goal: count completed workouts this week
+                    Calendar weekStart = Calendar.getInstance();
+                    weekStart.set(Calendar.DAY_OF_WEEK, weekStart.getFirstDayOfWeek());
+                    weekStart.set(Calendar.HOUR_OF_DAY, 0);
+                    weekStart.set(Calendar.MINUTE, 0);
+                    weekStart.set(Calendar.SECOND, 0);
+                    long weekStartMillis = weekStart.getTimeInMillis();
+
+                    int weeklyCount = 0;
+                    Set<String> completedDays = new TreeSet<>();
+                    SimpleDateFormat dayFmt = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+                    for (DocumentSnapshot doc : snapshot) {
+                        Boolean completed = doc.getBoolean("completed");
+                        Date date = doc.getDate("date");
+                        if (Boolean.TRUE.equals(completed) && date != null) {
+                            if (date.getTime() >= weekStartMillis) weeklyCount++;
+                            completedDays.add(dayFmt.format(date));
+                        }
+                    }
+
+                    // Streak calculation
+                    int streak = calculateStreak(completedDays, dayFmt);
+
+                    tvWeeklyGoal.setText(weeklyCount + "/5");
+                    tvStreak.setText(String.valueOf(streak));
+                });
+    }
+
+    private int calculateStreak(Set<String> completedDays, SimpleDateFormat fmt) {
+        if (completedDays.isEmpty()) return 0;
+        List<String> days = new ArrayList<>(completedDays);
+        Collections.sort(days, Collections.reverseOrder());
+
+        Calendar cal = Calendar.getInstance();
+        String today = fmt.format(cal.getTime());
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        String yesterday = fmt.format(cal.getTime());
+
+        if (!days.get(0).equals(today) && !days.get(0).equals(yesterday)) return 0;
+
+        int streak = 1;
+        for (int i = 0; i < days.size() - 1; i++) {
+            try {
+                Date d1 = fmt.parse(days.get(i));
+                Date d2 = fmt.parse(days.get(i + 1));
+                long diff = d1.getTime() - d2.getTime();
+                if (diff == 86400000L) streak++;
+                else break;
+            } catch (Exception e) { break; }
+        }
+        return streak;
     }
 
     private void updateDateDisplay() {
@@ -85,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         tvCurrentDate.setText(dateFmt.format(currentCalendar.getTime()));
 
         boolean isToday = isSameDay(currentCalendar, Calendar.getInstance());
-        tvDayLabel.setText(isToday ? "Today" : "");
         tvDayLabel.setVisibility(isToday ? View.VISIBLE : View.GONE);
     }
 
@@ -103,14 +174,12 @@ public class MainActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() == null) return;
         String userId = mAuth.getCurrentUser().getUid();
 
-        // Simplified query to avoid index errors: only filter by userId
-        // We will filter by date and completion in Java code
         db.collection("workout_history")
                 .whereEqualTo("userId", userId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     completedProgramIds.clear();
-                    
+
                     long startMillis = getStartOfDayMillis(currentCalendar);
                     long endMillis = getEndOfDayMillis(currentCalendar);
 
@@ -171,9 +240,9 @@ public class MainActivity extends AppCompatActivity {
                         addProgramCard(doc);
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Programs failed to load", Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Programs failed to load", Toast.LENGTH_SHORT).show()
+                );
     }
 
     private void showEmptyState(String dayName) {
@@ -203,16 +272,15 @@ public class MainActivity extends AppCompatActivity {
         View card = LayoutInflater.from(this).inflate(R.layout.item_program_card, programContainer, false);
         boolean isCompleted = completedProgramIds.contains(programId);
 
-        TextView tvName = card.findViewById(R.id.tvProgramName);
+        TextView tvName    = card.findViewById(R.id.tvProgramName);
         TextView tvExCount = card.findViewById(R.id.tvExerciseCount);
-        Button btnStart = card.findViewById(R.id.btnStartWorkout);
+        Button btnStart    = card.findViewById(R.id.btnStartWorkout);
         ImageView btnDelete = card.findViewById(R.id.btnDeleteProgram);
         LinearLayout exerciseList = card.findViewById(R.id.exerciseList);
 
         tvName.setText(name != null ? name : "Unnamed");
         tvExCount.setText(exCount + " exercise" + (exCount != 1 ? "s" : ""));
 
-        // Add exercises list to UI
         if (exercises != null) {
             for (Map<String, Object> ex : exercises) {
                 TextView tvEx = new TextView(this);
@@ -226,12 +294,12 @@ public class MainActivity extends AppCompatActivity {
                 exerciseList.addView(tvEx);
             }
         }
-        
+
         if (isCompleted) {
             card.setAlpha(0.5f);
             btnStart.setText("COMPLETED ✅");
             btnStart.setEnabled(false);
-            btnStart.setBackgroundTintList(null); 
+            btnStart.setBackgroundTintList(null);
         }
 
         btnStart.setOnClickListener(v -> {
